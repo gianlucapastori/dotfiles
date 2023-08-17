@@ -1,0 +1,42 @@
+!======================
+! Urxvt configuration! 
+!======================
+
+! sane defaults.
+URxvt*scrollBar: false
+URxvt*saveLines: 10000
+URxvt*visualBell: true
+URxvt*cursorBlink: true
+URxvt*cursorUnderline: false
+
+! better copy/paste.
+URxvt.keysym.Shift-Control-V: eval:paste_clipboard
+URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
+
+! 256 colors.
+URxvt*termName: xterm-256color
+
+! general appearence.
+URxvt*font: xft:Monospace:size=10
+URxvt*internalBorder: 5
+URxvt*allow_bold: false
+URxvt*italic_font: xft:Monospace:size=10
+
+URxvt*foreground: #ffffff
+URxvt*background: #000000
+URxvt*color0: #000000
+URxvt*color1: #800000
+URxvt*color2: #008000
+URxvt*color3: #808000
+URxvt*color4: #000080
+URxvt*color5: #800080
+URxvt*color6: #008080
+URxvt*color7: #c0c0c0
+URxvt*color8: #808080
+URxvt*color9: #ff0000
+URxvt*color10: #00ff00
+URxvt*color11: #ffff00
+URxvt*color12: #0000ff
+URxvt*color13: #ff00ff
+URxvt*color14: #00ffff
+URxvt*color15: #ffffff
