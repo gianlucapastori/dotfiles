@@ -1,189 +1,130 @@
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" => GENERAL
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" how many lines vim has to remeber.
-set history=500
+"*******************************************************************************
+" .vimrc: LaTeX, general scripting, editing minimal configuration;
+"*******************************************************************************
 
-" enable filetype plugins.
-filetype plugin on
-filetype indent on
+"*******************************************************************************
+" general configuration and sane defaults.
+"*******************************************************************************
+set nocompatible 				" disable vi compatibility.
 
-" change file when is modified outside vim.
-set autoread
-au FocusGained,BufEnter * checktime
+set exrc					" local .vimrc config.
+set secure					" //
 
-" set leadermap to space.
-let mapleader = " "
-nnoremap <SPACE> <Nop>
+set history=1000				" lines to remember.
 
-" use :W to save the file with super user 
-command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
+set updatetime=250				" update time.
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" => VIM UI
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" mark at 80 char.
-set cc=80
+nnoremap Q <NOP>				" disable Ex mode.
 
-" prevent windows chinese language bug.
-let $LANG='en'
-set langmenu=en
-source $VIMRUNTIME/delmenu.vim
-source $VIMRUNTIME/menu.vim
+set nrformats-=octal				" better increase/descrease.
 
-" wild menu completion.
-set wildmenu
+" general hotkeys.
+nnoremap <F12> :so $HOME/.vimrc<CR>		" reload vim configuration file.
 
-" ignore compiled files.
-set wildignore=*.o,*~,*.pyc
-if has("win16") || has("win32")
-	set wildignore+=.git\*,.hg\*,.svn\*
-else
-	set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.SD_Store
-endif
+let mapleader = ','				" leader key for more combinarions.
+let g:mapleader = ','				" //
+set timeoutlen=3000 ttimeoutlen=100		" delay on <Leader>.
 
-" always show current position
-set ruler
+"*******************************************************************************
+" minimalist user interface.
+"*******************************************************************************
+set showmode					" always show mode.
+set showcmd 					" always show commands.
+set laststatus=2				" always show status line.
 
-" command bar height.
-set cmdheight=1
+set wildmenu					" enable wildmenu.
 
-" buffer becomes hidden when abandoned.
-set hid
+set ruler					" enable ruler.
 
-" better backspace.
-set backspace=eol,start,indent
-set whichwrap+=<,>,h,l
+set cmdheight=2					" command bar height.
 
-" better searching.
-set smartcase
-set incsearch
+set lazyredraw					" do not redraw while executing macros.
 
-" ignore case when searching.
-set ignorecase
+set showmatch					" show matching brackets.
+set matchtime=0					" matching brackets blink.
 
-" highlight search results.
-set hlsearch
+set noerrorbells				" disable audio error bell.
+set visualbell					" enable visual error bell.
 
-" do not redraw while executing macros.
-set lazyredraw
+set cursorline 					" highlight cursor line.
+set nocursorcolumn				" highlight cursor column.
 
-" magic for regular expressions.
-set magic
+set autoindent					" enable autoindent.
+set smartindent					" enable smartindent.
 
-" match brackets when hover.
-set showmatch
-set mat=2
-
-" no bell indicator.
-set noerrorbells
-set novisualbell
-set t_vb=
-set tm=500
-
-" highlight syntax
-syntax enable
-
-set regexpengine=0
-
-" utf-8 encoding.
-set encoding=utf8
-
-" unix standard file type.
-set ffs=unix,dos,mac
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" => Files, Backup and undo.
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" no backup.
-set nobackup
-set nowb
-set noswapfile
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" => Text, tab and identation.
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" spaces instead of tabs.
-set expandtab
-
-" smarttabs
+set noexpandtab					" tabs > spaces.
 set smarttab
 
-" 4 spaces per tab (rule).
-set shiftwidth=4
-set tabstop=4
+set shiftwidth=8				" tab space.
+set tabstop=8
 
-" linebreak at 500 char.
-set lbr
-set tw=500
+set wrap					" wrap text.
 
-" auto ident.
-set ai
+set colorcolumn=80				" columns at character 80.
 
-" smart indent.
-set si
+set number					" show line numbers.
+set numberwidth=2				" //
 
-" wrap lines.
-set wrap
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" => Visual mode behaviour
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" search for current selection.
-vnoremap <silent> *<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
-vnoremap <silent> #<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
+syntax enable					" syntax highlighting.
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" => Buffers
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ommit W when moving buffers.
-map <C-j> <C-w>j
-map <C-k> <C-w>k
-map <C-l> <C-w>l
-map <C-h> <C-w>h
+"*******************************************************************************
+" files, searching and backups.
+"*******************************************************************************
+set noswapfile					" disable swap files.
+set nobackup					" disable backup.
+set nowritebackup				" //
 
-" close the current buffer.
-map <leader>bd :Bclose<cr>:tabclose<cr>gT
+set encoding=utf8
 
-" close all the buffers.
-map <leader>ba :bufdo bd<cr>
+set fileformats=unix,dos,mac			" Unix as standard file type.
 
-" move between buffers.
-map <leader>l :bnext<cr>
-map <leader>h :bprevious<cr>
+set autoread					" auto read file when it is changed from other application.
 
-" useful mappings for managing tabs.
-map <leader>bn :tabnew<cr>
-map <leader>bo :tabonly<cr>
-map <leader>bc :tabclose<cr>
-map <leader>bm :tabmove
-map <leader>b<leader> :tabnext<cr>
+set hlsearch					" highlight search.
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" => Status line
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" always show status line.
-set laststatus=2
+set incsearch					" better searching.
+set wrapscan					" //
+set ignorecase					" //
+set smartcase					" //
+set magic					" //
 
-" format status line.
-set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
+filetype plugin on				" enable filetype plugins.
+filetype indent on				" //
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Editing.
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Move a line of text using ALT+[jk] or Command+[jk] on mac
-nmap <M-j> mz:m+<cr>`z
-nmap <M-k> mz:m-2<cr>`z
-vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
-vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Helper functions
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" returns true if paste mode is enabled.
-function! HasPaste()
-    if &paste
-        return 'PASTE MODE  '
-    endif
-    return ''
-endfunction
+"*******************************************************************************
+" useful commands and functions.
+"*******************************************************************************
+" saves the file with super-user permissions.
+cnoremap WW w !sudo tee > /dev/null %
+
+" rename current file.
+nnoremap <F2> :call <SID>RenameFile()<CR>
+
+"*******************************************************************************
+" plugins -- with VimPlug.
+"*******************************************************************************
+call plug#begin('~/.vim/plugged')
+
+	" coc for auto-completion.
+	Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+	" vimtex for LaTeX integration.
+	Plug 'lervag/vimtex', { 'for': 'tex' }
+
+	" live preview for LaTeX.
+	Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
+
+call plug#end()
+
+"*******************************************************************************
+" plugin specific configuration.
+"*******************************************************************************
+" VimTex.
+let g:vimtex_view_method = 'zathura'
+let maplocalleader = ","
+
+" vim-latex-live-preview.
+let g:livepreview_previewer = 'zathura'
+autocmd Filetype tex setl updatetime=1
