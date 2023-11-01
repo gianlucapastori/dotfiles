@@ -65,7 +65,6 @@ set colorcolumn=80				" columns at character 80.
 set number					" show line numbers.
 set numberwidth=2				" //
 
-
 syntax enable					" syntax highlighting.
 
 "*******************************************************************************
@@ -96,35 +95,13 @@ filetype indent on				" //
 "*******************************************************************************
 " useful commands and functions.
 "*******************************************************************************
+" variables and constants.
+let g:md_view_command = "pandoc daw.md | lynx -stdin"
+
 " saves the file with super-user permissions.
 cnoremap WW w !sudo tee > /dev/null %
 
-" rename current file.
-nnoremap <F2> :call <SID>RenameFile()<CR>
-
-"*******************************************************************************
-" plugins -- with VimPlug.
-"*******************************************************************************
-call plug#begin('~/.vim/plugged')
-
-	" coc for auto-completion.
-	Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
-	" vimtex for LaTeX integration.
-	Plug 'lervag/vimtex', { 'for': 'tex' }
-
-	" live preview for LaTeX.
-	Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
-
-call plug#end()
-
-"*******************************************************************************
-" plugin specific configuration.
-"*******************************************************************************
-" VimTex.
-let g:vimtex_view_method = 'zathura'
-let maplocalleader = ","
-
-" vim-latex-live-preview.
-let g:livepreview_previewer = 'zathura'
-autocmd Filetype tex setl updatetime=1
+" live-preview for .md files.
+if executable('grip')
+	command! -buffer PreviewMd execute 'Dispatch grip --pass grip -b %'
+endif
