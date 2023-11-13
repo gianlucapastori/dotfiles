@@ -95,13 +95,10 @@ filetype indent on				" //
 "*******************************************************************************
 " useful commands and functions.
 "*******************************************************************************
-" variables and constants.
-let g:md_view_command = "pandoc daw.md | lynx -stdin"
+command! -nargs=0 TexPreview call TexPreview()
 
-" saves the file with super-user permissions.
-cnoremap WW w !sudo tee > /dev/null %
-
-" live-preview for .md files.
-if executable('grip')
-	command! -buffer PreviewMd execute 'Dispatch grip --pass grip -b %'
-endif
+function! TexPreview()
+    let l:current_file = expand('%:p')
+    let l:latexmk_command = 'latexmk -pvc -pdf ' . shellescape(l:current_file)
+    call system('rxvt -e sh -c "' . l:latexmk_command . '" &')
+endfunction
